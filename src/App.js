@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router,Route,Link} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 import Home from './components/Home'
 import About from './components/About'
@@ -14,7 +14,7 @@ class App extends Component {
     this.state = {
       wizards: [
         { name: "Merlin", power: "Wisdom", other: "Helped King Arthur", imgUrl: "https://tinyurl.com/merlin-image" },
-        { name: "Morgana Le Fay", power: "Forces of Nature", other: "Trapped Merlin in a cave for eternity", imgUrl: "https://tinyurl.com/morgana-image" },
+      { name: "Morgana Le Fay", power: "Forces of Nature", other: <div>Trapped <Link to="/directory/wizards/Merlin"> Merlin</Link> in a cave for eternity</div>, imgUrl: "https://tinyurl.com/morgana-image" },
         { name: "Gandalf", power: "Plot Convenience", other: "Once broke a bridge", imgUrl: "https://tinyurl.com/gandalf-img" }
       ],
       bestiary: [
@@ -24,28 +24,28 @@ class App extends Component {
       ]
     }
   }
-  
+
   render() {
     const state = this.state
     return (
       <Router>
-      <div className="App">
-        <div id="home-background"></div>
-        <div id="main-links">
-        <Link to="/">Home</Link>
-        <Link to="/about">About</Link>
-        
-          {/* Main Links */}
+        <div className="App">
+          <div id="home-background"></div>
+          <div id="main-links">
+            <Link to="/">Home</Link>
+            <Link to="/about">About</Link>
+
+            {/* Main Links */}
+          </div>
+          <Route path="/" exact component={Home} />
+          <Route path="/about" exact render={() => <About items={Object.keys(state)} />} />
+          <Route path="/directory/:fentities" exact render={({ match }) =>
+            <Fentities match={match} state={this.state} />} />
+
+          <Route path="/directory/:fentities/:name" exact render={({ match }) =>
+            <Fentity match={match} state={this.state} />} />
+          {/* Routes go here ^ */}
         </div>
-        <Route path="/" exact component={Home}/>
-        <Route path="/about" render={() => <About items={Object.keys(state)} />} />
-        <Route path="/directory/:fentities" exact render={({ match }) => 
-        <Fentities match={match} state={this.state} />}/> 
-        
-            <Route path="/directory/:fentities/:name" exact render={({ match }) => 
-           <Fentity match={match} state={this.state} />}/> 
-        {/* Routes go here ^ */}
-      </div>
       </Router>
     );
   }
