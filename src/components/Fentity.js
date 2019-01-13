@@ -1,24 +1,23 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-
+import {Redirect} from 'react-router-dom'
 import '../styles/fentity.css'
 
 
 class Fentity extends Component {
     render() {
         const match = this.props.match
-        
         const fentitiesCategory = match.params.fentities
-        console.log(this.props)
-        console.log(this.props.match)
-        console.log(this.props.state)
         const name = match.params.name
         
         const fentity = this.props.state[fentitiesCategory].filter(f => {
             return f.name.toLowerCase() === name.toLowerCase()
         })[0]
-        console.log(match)
+       
+        const fentityExcist=this.props.state[fentitiesCategory].findIndex(r=> r.name===name)
+       if (fentityExcist!=-1){
         return (
+            
             <div>
             <div id="creature-container">
                 <h1>{fentity.name}</h1>
@@ -29,8 +28,15 @@ class Fentity extends Component {
             </div>
             <Link to={`/directory/${this.props.match.params.fentities}`}>Back</Link>
             </div>
-        )
+        )}
+        else{
+            return <Redirect to="/"/>
+        }
+        }
     }
-}
+    
+
+
+
 
 export default Fentity;
